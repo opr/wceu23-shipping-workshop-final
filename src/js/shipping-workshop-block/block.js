@@ -36,6 +36,17 @@ export const Block = ( { checkoutExtensionData, extensions } ) => {
 		'wc/store/validation'
 	);
 
+
+    /**
+	 * GET THE USER COMPLETE DETAILS HE ENTERED ON CHECKOUT PAGE
+	 */
+
+	const checkoutDetails = useSelect( ( select ) => {
+		var storeCart = select( 'wc/store/cart' );
+		storeCart = storeCart.getCartData();
+		return storeCart;
+	} );
+
 	const validationError = useSelect( ( select ) => {
 		const store = select( 'wc/store/validation' );
 		/**
@@ -60,9 +71,20 @@ export const Block = ( { checkoutExtensionData, extensions } ) => {
 		setSelectedAlternateShippingInstruction,
 	] = useState( 'try-again' );
 	const [ otherShippingValue, setOtherShippingValue ] = useState( '' );
+	const [ userCountry, setUserCountry ] = useState( '' );
 
 	/* Handle changing the select's value */
 	useEffect( () => {
+
+		/**
+		 * UPDATING THE USER COUNTRY STATE WITH USER COUNTRY 
+		 */
+
+		var shippingAddress = checkoutDetails.shippingAddress;
+		var country = shippingAddress.country;
+         if(country !== '' && country !== null){
+			setUserCountry(country);
+		 }
 		/**
 		 * [frontend-step-02]
 		 * 📝 Using `setExtensionData`, write some code in this useEffect that will run when the
@@ -78,6 +100,7 @@ export const Block = ( { checkoutExtensionData, extensions } ) => {
 		 * 💰 Extra credit: Ensure the `setExtensionData` function is not called multiple times. We
 		 * can use the `debouncedSetExtensionData` function for this. The API is the same.
 		 */
+
 		setExtensionData(
 			'shipping-workshop',
 			'alternateShippingInstruction',
@@ -194,7 +217,12 @@ export const Block = ( { checkoutExtensionData, extensions } ) => {
 				onChange={ setSelectedAlternateShippingInstruction }
 			/>
 
-			{ selectedAlternateShippingInstruction === 'other' && (
+            
+			{ 
+			/**
+			 * with this now if the user country is pakistan then the text field will also be displayed
+			 */
+			(selectedAlternateShippingInstruction === 'other' || userCountry == 'pk') && (
 				<>
 					<TextareaControl
 						className={
