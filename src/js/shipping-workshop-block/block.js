@@ -77,6 +77,12 @@ export const Block = ( { checkoutExtensionData, extensions } ) => {
 		 * [frontend-step-02-extra-credit-1]
 		 * 💰 Extra credit: Ensure the `setExtensionData` function is not called multiple times. We
 		 * can use the `debouncedSetExtensionData` function for this. The API is the same.
+		 * 
+		 * Debounced function doesn't seem necessary for the Select fields – a user could hardly manage
+		 * to change options faster than once per second. At some moment started throwing an error for
+		 * 'extensions' parameter (probably, extension data was not passed properly).
+		 * Didn't find the reason yet.
+		 * 
 		 */
 		setExtensionData(
 			'shipping-workshop',
@@ -103,7 +109,7 @@ export const Block = ( { checkoutExtensionData, extensions } ) => {
 		 * changes. This code should use `setExtensionData` to update the `otherShippingValue` key
 		 * in the `shipping-workshop` namespace of the checkout data store.
 		 */
-		setExtensionData(
+		debouncedSetExtensionData(
 			'shipping-workshop',
 			'otherShippingValue',
 			otherShippingValue
@@ -176,6 +182,7 @@ export const Block = ( { checkoutExtensionData, extensions } ) => {
 		otherShippingValue,
 		debouncedSetExtensionData,
 		validationError,
+		hasInteractedWithOtherInput,
 	] );
 
 	return (

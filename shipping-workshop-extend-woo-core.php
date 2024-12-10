@@ -1,7 +1,4 @@
 <?php
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CartSchema;
-use Automattic\WooCommerce\Blocks\StoreApi\Schemas\CheckoutSchema;
 
 /**
  * Shipping Workshop Extend WC Core.
@@ -23,41 +20,6 @@ class Shipping_Workshop_Extend_Woo_Core {
 		$this->show_shipping_instructions_in_order();
 		$this->show_shipping_instructions_in_order_confirmation();
 		$this->show_shipping_instructions_in_order_email();
-	}
-
-
-	/**
-	 * Register shipping workshop schema into the Checkout endpoint.
-	 *
-	 * @return array Registered schema.
-	 */
-	public function extend_checkout_schema() {
-
-		return [
-			'otherShippingValue'           => [
-				'description' => 'Other text for shipping instructions',
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'optional'    => true,
-				'arg_options' => [
-					'validate_callback' => function( $value ) {
-						return is_string( $value );
-					},
-				],
-			],
-			'alternateShippingInstruction' => [
-				'description' => 'Alternative shipping instructions for the courier',
-				'type'        => 'string',
-				'context'     => [ 'view', 'edit' ],
-				'readonly'    => true,
-				'arg_options' => [
-					'validate_callback' => function( $value ) {
-						return is_string( $value );
-					},
-				],
-			],
-		];
 	}
 
 	/**
